@@ -22,7 +22,6 @@ class guess_game:
             if str(i) == "exit":
                 self.exit = True
                 return
-            # TODO if input is exit case
             print(("Too low!","Too high!", "Congratulations, you've got it!", "The answer to the ultimate question of life, the universe and everything is 42.")
                   [(int(i) >= self.num) + (int(i) == self.num) + (int(i) == 42)])
             self.att += 1
