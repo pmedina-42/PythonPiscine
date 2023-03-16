@@ -36,27 +36,41 @@ class Bank(object):
             print('Amount in bad format')
             return False
 
+
+       if isinstance(origin, str) and isinstance(dest, str):
+            i = [acc.name == name for acc in self.accounts].index(origin)
+            o = self.accounts[i]
+            i = [acc.name == name for acc in self.accounts].index(dest)
+            d = self.accounts[i]
+        else:
+           return False
+
+        if isinstance(o, Account) and isinstance(d, Account):
+            
+            if all(key in o.__dict__ for key in ('name', 'id', 'value')) \
+                    and all(any(attr.startswith(prefix) for attr in o.__dict__) for prefix in ['addr', 'zip']) \
+                     and not any(attr.startswith('b') for attr in o.__dict__) \
+                    and all(key in d.__dict__ for key in ('name', 'id', 'value')) \
+                    and all(any(attr.startswith(prefix) for attr in d.__dict__) for prefix in ['addr', 'zip']) \
+                    and not any(attr.startswith('b') for attr in d.__dict__) \
+                    and isinstance(o.name, str) and isinstance(o.id, int) \
+                    and (isinstance(o.value, float) or isinstance(o.value, int) and len(o.__dict__) % 2 == 1) \
+                    and isinstance(d, str) and isinstance(d.name, str) and isinstance(d.id, int) \
+                    and (isinstance(d.value, float) or isinstance(d.value, int) and len(d.__dict__) % 2 == 1):
+                if o.value >= amount > 0:
+                    o.transfer(-amount)
+                    d.transfer(amount)
+                    print('{a} trasferred from {o} to {d}'.format(a=amount, o=origin, d=dest))
+                    return True
+                print('Cannot transfer {a} from {o} to {d}. Not enough monney'.format(a=amount, o=origin, d=dest))
+                return False
+            else:
+                return False
+
         # This prints all attributes, but I used dict instead beacuse it only has the ones defined in the class
         # print(dir(origin))
 
         # If requested attributes are informed and none starting with 'b' is found and each instance is well formated
-        if all(key in origin.__dict__ for key in ('name', 'id', 'value')) \
-                and all(any(attr.startswith(prefix) for attr in origin.__dict__) for prefix in ['addr', 'zip']) \
-                and not any(attr.startswith('b') for attr in origin.__dict__) \
-                and all(key in dest.__dict__ for key in ('name', 'id', 'value')) \
-                and all(any(attr.startswith(prefix) for attr in dest.__dict__) for prefix in ['addr', 'zip']) \
-                and not any(attr.startswith('b') for attr in dest.__dict__) \
-                and isinstance(origin, Account) and isinstance(origin.name, str) and isinstance(origin.id, int) \
-                and (isinstance(origin.value, float) or isinstance(origin.value, int) and len(origin.__dict__) % 2 == 1) \
-                and isinstance(dest, Account) and isinstance(dest.name, str) and isinstance(dest.id, int) \
-                and (isinstance(dest.value, float) or isinstance(dest.value, int) and len(dest.__dict__) % 2 == 1):
-            if origin.value >= amount > 0:
-                origin.transfer(-amount)
-                dest.transfer(amount)
-                print('{a} trasferred from {o} to {d}'.format(a=amount, o=origin.name, d=dest.name))
-                return True
-            print('Cannot transfer {a} from {o} to {d}. Not enough monney'.format(a=amount, o=origin.name, d=dest.name))
-            return False
 
         print('Cannot transfer {a} from {o} to {d}. One account is corrupted'.format(a=amount, o=origin.name, d=dest.name))
         return False
