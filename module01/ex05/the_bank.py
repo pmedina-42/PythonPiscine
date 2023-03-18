@@ -37,16 +37,17 @@ class Bank(object):
             return False
 
 
-       if isinstance(origin, str) and isinstance(dest, str):
-            i = [acc.name == name for acc in self.accounts].index(origin)
-            o = self.accounts[i]
-            i = [acc.name == name for acc in self.accounts].index(dest)
-            d = self.accounts[i]
+        if isinstance(origin, str) and isinstance(dest, str):
+            for acc in self.accounts:
+                if acc.name == origin:
+                    o = acc
+                if acc.name == dest:
+                    d = acc
         else:
            return False
 
         if isinstance(o, Account) and isinstance(d, Account):
-            
+            # If both origin and dest accounts have the necessary fields
             if all(key in o.__dict__ for key in ('name', 'id', 'value')) \
                     and all(any(attr.startswith(prefix) for attr in o.__dict__) for prefix in ['addr', 'zip']) \
                      and not any(attr.startswith('b') for attr in o.__dict__) \
@@ -55,7 +56,7 @@ class Bank(object):
                     and not any(attr.startswith('b') for attr in d.__dict__) \
                     and isinstance(o.name, str) and isinstance(o.id, int) \
                     and (isinstance(o.value, float) or isinstance(o.value, int) and len(o.__dict__) % 2 == 1) \
-                    and isinstance(d, str) and isinstance(d.name, str) and isinstance(d.id, int) \
+                    and isinstance(d.name, str) and isinstance(d.id, int) \
                     and (isinstance(d.value, float) or isinstance(d.value, int) and len(d.__dict__) % 2 == 1):
                 if o.value >= amount > 0:
                     o.transfer(-amount)
@@ -64,6 +65,7 @@ class Bank(object):
                     return True
                 print('Cannot transfer {a} from {o} to {d}. Not enough monney'.format(a=amount, o=origin, d=dest))
                 return False
+
             else:
                 return False
 
@@ -83,16 +85,18 @@ class Bank(object):
 
         i = [acc.name == name for acc in self.accounts].index(True)
         acc = self.accounts[i]
-        print(acc.name)
         if not 'value' in acc.__dict__:
             acc.__dict__.update({'value': 0})
 
         if not any(attr.startswith('addr') for attr in acc.__dict__):
-            print('deberia')
-            acc.__dict__.update({'addr' : ''})
+            acc.__dict__.update({'addr' : 'addr'})
 
         if not any(attr.startswith('zip') for attr in acc.__dict__):
-            acc.__dict__.update({'zip' : ''})
+            acc.__dict__.update({'zip' : 'zip'})
+
+        if len(acc.__dict__) % 2 != 1:
+            acc.__dict__.update({'filler': ''})
+        return True
 
 
 if __name__ == '__main__':
