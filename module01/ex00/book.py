@@ -13,7 +13,6 @@ class Book:
     def add_recipe(self, recipe):
         try:
             if isinstance(recipe, Recipe) and (len([str(recipe) for rec in self.recipes if rec.name == recipe.name]) == 0):
-                print(str(recipe))
                 self.recipes.append(recipe)
                 print('Recipe for {name} added to book\n'.format(name=recipe.name))
                 self.last_update = datetime.now()
