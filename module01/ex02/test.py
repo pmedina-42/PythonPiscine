@@ -1,0 +1,43 @@
+from vector import Vector
+
+if __name__ == '__main__':
+    try:
+        v = Vector([[0.0, 1.0, 2.0, 3.0]])
+        print('--------------------')
+        print('Vector v to string:')
+        print(str(v))
+        v1 = Vector([[1.0], [2.0], [3.0], [4.0]])
+        print('--------------------')
+        print('Vector v1 to string:')
+        print(str(v1))
+        print('--------------------')
+        print('Vector repr:')
+        print(repr(v))
+        print('--------------------')
+        print('Sum v + v:')
+        print((v+v).values)
+        print('--------------------')
+        print('Sum v1 + v1:')
+        print((v1+v1).values)
+        print('--------------------')
+        print('Subs v + v:')
+        print((v-v).values)
+        print('--------------------')
+        print('Subs v1 + v1:')
+        print((v1-v1).values)
+        print('--------------------')
+        print('Mul v * 5:')
+        print((v * 5).values)
+        print('--------------------')
+        print('Div v / 5:')
+        print((v / 5).values)
+        print('--------------------')
+        print('v1.T():')
+        print(v1.T().values)
+        print('--------------------')
+        print('v.dot(v):')
+        print(v.dot(v))
+
+    except AttributeError as e:
+        print(e)
+    pass

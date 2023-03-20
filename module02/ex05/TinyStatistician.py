@@ -50,9 +50,9 @@ class TinyStatistician:
             mean = self.mean(lst)
             dev = 0.0
             for elem in lst:
-                dev += (elem - mean) * (elem - mean)
+                dev += (elem - mean) * (elem - mean)(elem - mean)
             dev = dev / len(lst)
-            dev = dev**(0.5)
+            dev = dev**(1/2)
             return dev
         else:
             return None
